@@ -66,11 +66,12 @@ function makeMessageSubmitHandler(client, sipUsername) {
     const destinationNumber = `sip:${toInput.value}@sip.telnyx.com`;
 
     const call = client.newCall({
-      // Note to self: Getting `"Invalid SIP URI calling preference D30` when
+      // Note to self: Getting hangup SIP reason `"Invalid SIP URI calling preference D30` when
       // using "Receive SIP URI Calls" = Only from my connections
       destinationNumber,
       callerName: sipUsername, // required or will fail without reason
-      audio: true, // Needed even for just messages
+      // callerNumber: '', // required for outbound PSTN calls, otherwise will hangup with `Caller Origination Number is Invalid D35`
+      audio: true, // if both are false, call will not fail but won't receive notifications beyond "new" state
       video: false,
     });
   };
